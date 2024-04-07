@@ -1,75 +1,34 @@
 #include<iostream>
-#include<cmath>
-#include<cstdlib>
+#include<iomanip>
+#include<math.h>
 using namespace std;
-void sendtoXprev(float Xprev[],float Xnew[],int x){
-    for(int i=0;i<x;i++){
-        Xprev[i]=Xnew[i];
-    }
-}
+//6x1-2x2+x3=11
+//x1+2x2-5x3=-1
+//-2x1+7x2+2x3=5
+#define f1(x,y,z) (11+2*y-z)/6
+#define f2(x,y,z) (5+2*x-2*z)/7
+#define f3(x,y,z) (1+x+2*y)/5
 int main(){
-	int x,y;
-	cout<<"How many equations do you have? ";
-	cin>>x;
-	cout<<"How many variables do you have? ";
-	cin>>y;
-
-	float A[x][y+1];
-	float Xprev[x],Xnew[x],error[x];
-	int bye;
-	float X[x];
-
-	for(int i=0;i<x;i++){
-		cout<<"For 1st equation: "<<endl;
-		Xnew[i]=0;
-		for(int j=0;j<=y;j++){
-			if(j==y){
-				cout<<"Enter the value of constant : ";
-			}else{
-				cout<<"Enter the value of x"<<i+1<<" : ";
-			}
-			cin>>A[i][j];
-		}
-		cout<<endl;
-	}
-    
-    for(int j=0;j<x;j++){
-        for(int i=j;i<x-1;i++){
-            if(abs(A[i][j])<abs(A[i+1][j])){
-                for(int k=0;k<=x;k++){
-                    int temp=A[i][k];
-                    A[i][k]=A[i+1][k];
-                    A[i+1][k]=temp;
-                }
-            }
-        }
-    }
+float a=0,b=0,c=0,a1,a2,a3,e1,e2,e3,e;
+int n=1;
+cout<<"Enter error:"<<endl;
+cin>>e;
+do{
+	a1=f1(a,b,c);
+	a2=f2(a,b,c);
+	a3=f3(a,b,c);
+	cout<<"Step-"<<n<<"  a1="<<a1<<"  a2="<<a2<<"  a3="<<a3<<" "<<endl;	
+	e1=fabs(a-a1);
+	e2=fabs(a-a2);
+	e3=fabs(a-a3);
 	
-	do{
-	    for(int i=0;i<x;i++){
-	        Xnew[i]=0;
-	        for(int j=0;j<x;j++){
-	            if(i!=j){
-	                cout<<Xnew[i]<<" + "<<A[i][j]<<" * "<<Xprev[j]<<endl;
-	                Xnew[i]=Xnew[i]+A[i][j]*Xprev[j];
-	            }
-	        }
-	        Xnew[i]=(A[i][x]-Xnew[i])/A[i][i];
-	        cout<<Xnew[i]<<endl;
-	    }
-
-	    bye=1;
-	    for(int i=0;i<x;i++){
-	        error[i]=abs((Xnew[i]-Xprev[i])/Xnew[i]);
-	        if(error[i]>0.05){
-	            bye=0;
-	        }
-	    }
-	    sendtoXprev(Xprev,Xnew,x);
-	}while(bye!=1);
-
-    for(int i=0;i<x;i++){
-        cout<<Xnew[i]<<endl;
-    }
-	return 0;
+	a=a1;
+	b=a2;
+	c=a3;
+	
+	n++;
+}while(e1>e&& e2>e&&e3>e);
+cout<<"The value of x,y and z is "<<a1<<" "<<a2<<" and "<<a3<<endl;
+return 0;
+	
 }

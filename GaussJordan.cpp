@@ -1,89 +1,40 @@
 #include<iostream>
-#include<cmath>
+#include<math.h>
+#define max 10
 using namespace std;
-
 int main(){
-	int x,y;
-	cout<<"How many equations do you have? ";
-	cin>>x;
-	cout<<"How many variables do you have? ";
-	cin>>y;
-
-	float A[x][y+1];
-	float X[x];
-	for(int i=0;i<x;i++){
-		cout<<"For 1st equation: "<<endl;
-		for(int j=0;j<=y;j++){
-			if(j==y){
-				cout<<"Enter the value of constant : ";
-			}else{
-				cout<<"Enter the value of x"<<i+1<<" : ";
-			}
-			cin>>A[i][j];
+	float a[max][max],x[max],ratio;
+	int n,i,j,k;
+	cout<<"Enter the number of datas:"<<endl;
+	cin>>n;
+	cout<<"Enter coefficients of matrix:"<<endl;
+	for(i=1;i<=n;i++){
+		for(j=1;j<=n+1;j++){
+			cout<<"Enter a["<<i<<"]["<<j<<"]:";
+			cin>>a[i][j];
 		}
-		cout<<endl;
 	}
-
-
-
-    float val;
-	for(int k=0;k<x;k++){
-	    //display
-		for(int i=0;i<x;i++){
-			for(int j=0;j<=y;j++){
-				cout<<A[i][j]<<"\t";
-			}
-			cout<<endl;
+	for(i=1;i<=n;i++){
+		if(a[i][i]==0.0){
+			cout<<"Error"<<endl;
+			exit(0);
 		}
-		cout<<endl;
-		for(int i=0;i<x;i++){
-			if(i<k){
-				continue;
-			}
-			val=A[i][k];
-			for(int j=0;j<=y;j++){
-				if(i==k){
-					A[i][j]=A[i][j]/val;
-				}	else{
-					A[i][j]=A[i][j]-val *A[k][j];
+			for(j=1;j<=n;j++){
+				if(i!=j){
+					ratio=a[j][i]/a[i][i];
+					for( k=1;k<=n+1;k++){
+						a[j][k]=a[j][k]-ratio*a[i][k];
+					}
 				}
 			}
 		}
-	}
-	
-	//display
-		for(int i=0;i<x;i++){
-			for(int j=0;j<=y;j++){
-				cout<<A[i][j]<<"\t";
-			}
-			cout<<endl;
-		}
-	cout<<endl<<"hiii"<<endl;
-	for(int k=x-2;k>=0;k--){
-	    for(int i=k;i>=0;i--){
-	        val=A[i][k+1];
-	        for(int j=0;j<=x;j++){
-	            cout<<A[i][j]<<" - "<<val<<" * "<<A[i+1][j]<<" = "<<A[i][j]-val*A[i+1][j]<<endl;
-	            A[i][j]= A[i][j]-val*A[k+1][j];
-	        }
-	    }
-	    //display
-		for(int i=0;i<x;i++){
-			for(int j=0;j<=y;j++){
-				cout<<A[i][j]<<"\t";
-			}
-			cout<<endl;
-		}
-		cout<<endl;
-	}
-	
-
-	
-	
-	cout<<endl<<endl;
-	for(int i=0;i<x;i++){
-		cout<<"x"<<i+1<<" = "<<A[i][x]<<endl;
-	}
-	
+		for(i=1;i<=n;i++)
+		 {
+		  	x[i] = a[i][n+1]/a[i][i];
+		 }
+		 cout<<"Solution is:"<<endl;
+		 for(i=1;i<=n;i++){
+		 	cout<<"x["<<i<<"]="<<x[i]<<endl;
+		 }
 	return 0;
 }

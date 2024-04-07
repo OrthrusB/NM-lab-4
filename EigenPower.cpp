@@ -1,75 +1,72 @@
 #include<iostream>
-#include<cmath>
+#include<math.h>
+#define max 10
 using namespace std;
-
-int main(){
-    int x,y;
-    cout<<"Enter the row of matrix: ";
-    cin>>x;
-    cout<<"Enter the column of matrix: ";
-    cin>>y;
-
-    float A[x][y];
-    float X[x],Y[x],Xnew[x];
-    X[x/2]=1;
-    float stop=1;
-    float k;
-    float error[x];
-
-    for(int i=0;i<x;i++){
-        for(int j=0;j<y;j++){
-            cout<<"Enter for a"<<i+1<<j+1<<" : ";
-            cin>>A[i][j];
-        }
-    }
-    int c=0;
-    do{
-        for(int i=0;i<x;i++){
-            Y[i]=0;
-            for(int j=0;j<y;j++){
-                //cout<<Y[i]<<" + "<<A[i][j]<<" * "<<X[j]<<endl;
-                Y[i]=Y[i]+A[i][j]*X[j];
-            }
-            cout<<Y[i]<<" ";
-        }
-        cout<<endl;
-        
-        k=Y[0];
-        for(int j=0;j<x;j++){
-            if(Y[j]>k){
-                k=Y[j];
-            }
-        }
-        cout<<"k= "<<k;
-        cout<<endl;
-        for(int j=0;j<x;j++){
-            Xnew[j]=Y[j]/k;
-            cout<<Xnew[j]<<" ";
-        }
-        cout<<endl;
-        stop=1;
-            for(int i=0;i<x;i++){
-            if(Xnew[i]==0){
-                error[i]=0;
-            }else{
-                error[i]=abs((Xnew[i]-X[i])/Xnew[i]);
-            }
-	        cout<<error[i]<<" ";
-	        if(error[i]>0.05){
-	            stop=0;
-	        }
-	        }
-           cout<<endl;
-            for(int j=0;j<x;j++){
-                X[j]=Xnew[j];
-            }
-            cout<<endl<<endl;
-            c++;
-            
-    }while(stop!=1);
-    for(int j=0;j<x;j++){
-        cout<<Xnew[j]<<" ";
-    }
-    cout<<endl<<k;
-    return 0;
+int main()
+{
+	 float a[max][max], x[max],x_new[max];
+	 float temp,newval, oldval, error;
+	 int i,j,n, step=1;
+	 cout<<"Enter Order of Matrix: ";
+	 cin>>n;
+	 cout<<"Enter error: ";
+	 cin>>error;
+	 cout<<"Enter the augmented matrix "<< endl;
+	 for(i=1;i<=n;i++)
+	 {
+		  for(j=1;j<=n;j++)
+		  {
+			   cout<<"a["<< i<<"]"<< j<<"]= ";
+               cin>>a[i][j];
+		  }
+	 }
+	 cout<<"Enter Initial Guess:"<< endl;
+	 for(i=1;i<=n;i++)
+	 {
+		  cout<<"x["<< i<<"]= ";
+		  cin>>x[i];
+	 }
+	 oldval = 1;
+	 up:
+	 for(i=1;i<=n;i++)
+	 {
+		  temp = 0.0;
+		  for(j=1;j<=n;j++)
+		  {
+		   	temp = temp + a[i][j]*x[j];
+		  }
+		  x_new[i] = temp;
+	 }
+	 for(i=1;i<=n;i++)
+	 {
+	  	x[i] = x_new[i];
+	 }
+	 newval = fabs(x[1]);
+	 for(i=2;i<=n;i++)
+	 {
+		  if(fabs(x[i])>newval)
+		  {
+		   newval = fabs(x[i]);
+		  }
+	 }
+	 for(i=1;i<=n;i++)
+	 {
+	  	x[i] = x[i]/newval;
+	 }
+	 cout<< endl<< endl<<"STEP-"<< step<< endl;
+	 cout<<"Eigen Value = "<< newval<< endl;
+	 cout<<"Eigen Vector: "<< endl;
+	 cout<<"[";
+	 for(i=1;i<=n;i++)
+	 {
+	  	cout<< x[i]<<" ";
+	 }
+     cout<<"]";
+	 if(fabs(newval-oldval)>error)
+	 {
+		  oldval=newval;
+		  step++;
+		  goto up;
+	 }
+	 return 0;
 }
